@@ -4,6 +4,18 @@ GAuth : Google Authenticator Code Generator/Validation
 The `GAuth` library is designed to generate and validate codes compatible with the
 Google Authenticator tools.
 
+### Installation via Composer:
+
+Include in your `composer.json` file:
+
+```
+{
+    "require": {
+        "enygma/gauth": "dev-master"
+    }
+}
+```
+
 Sample usage:
 
 #### To generate a new code:
@@ -38,3 +50,8 @@ if ($verify == true) {
 }
 ?>
 ```
+
+#### More info:
+
+- [Google TOTP Two-factor Authentication for PHP](http://www.idontplaydarts.com/2011/07/google-totp-two-factor-authentication-for-php/)
+- [Links to client for smartphones](http://support.google.com/accounts/bin/answer.py?hl=en&answer=1066447)
