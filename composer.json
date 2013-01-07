@@ -1,0 +1,24 @@
+
+{
+    "name":"enygma/gauth",
+    "type":"library",
+    "description":"PHP library to generate codes compatible with the Google Authenticator clients",
+    "keywords":["google", "twofactor", "authenticator", "codes"],
+    "homepage":"https://github.com/enygma/gauth.git",
+    "license":"MIT",
+    "authors":[
+        {
+            "name":"Chris Cornutt",
+            "email":"ccornutt@phpdeveloper.org",
+            "homepage":"http://www.phpdeveloper.org/"
+        }
+    ],
+    "require":{
+        "php":">=5.3.1"
+    },
+    "autoload":{
+        "psr-0":{
+            "GAuth":"src/"
+        }
+    }
+}
