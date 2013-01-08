@@ -16,7 +16,27 @@ Include in your `composer.json` file:
 }
 ```
 
-Sample usage:
+#### Getting Started
+
+To get started using the Google Authenticator with your application, you'll need to make an 
+initialization key (using `generateCode`) and save that to your app's settings. This is the 
+code you'll share with your users when they're trying to set up their client for your system.
+
+Then, when they log in you have them enter in the latest code listed for your application for
+thier account. 
+ 
+**NOTE:** This tool offers a "window of opportunity" for the codes of 2 mintutes forward and
+backward of the current timestamp, just in case things are a bit off. You can change this with
+the `setRange` method:
+
+```php
+<?php
+$g = new \GAuth\Auth();
+
+// set it to 3 minutes
+$g->setRange(3);
+?>
+```
 
 #### To generate a new code:
 
@@ -40,7 +60,7 @@ var_dump($code);
 
 $code = 'code-inputted-from-user';
 
-$g = new \GAuth\Auth();
+$g = new \GAuth\Auth('your-initialization-code');
 $verify = $g->validateCode($code);
 
 if ($verify == true) {
