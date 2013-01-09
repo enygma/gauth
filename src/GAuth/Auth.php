@@ -41,6 +41,12 @@ class Auth
     private $codeLength = 6;
 
     /**
+     * Range plus/minus for "window of opportunity" on allowed codes
+     * @var integer
+     */
+    private $range = 2;
+
+    /**
      * Initialize the object and set up the lookup table
      *     Optionally the Initialization key
      *
@@ -67,6 +73,30 @@ class Auth
             range(0, 31)
         );
         $this->setLookup($lookup);
+    }
+
+    /**
+     * Get the current "range" value
+     * @return integer Range value
+     */
+    public function getRange()
+    {
+        return $this->range;
+    }
+
+    /**
+     * Set the "range" value
+     *
+     * @param integer $range Range value
+     * @return \GAuth\Auth instance
+     */
+    public function setRange($range)
+    {
+        if (!is_numeric($range)) {
+            throw new \InvalidArgumentException('Invalid window range');
+        }
+        $this->range = $range;
+        return $this;
     }
 
     /**
@@ -179,12 +209,13 @@ class Auth
      * @throws \InvalidArgumentException If incorrect code length
      * @return boolean Pass/fail of validation
      */
-    public function validateCode($code, $initKey = null, $timestamp = null, $range = 2)
+    public function validateCode($code, $initKey = null, $timestamp = null, $range = null)
     {
         if (strlen($code) !== $this->getCodeLength()) {
             throw new \InvalidArgumentException('Incorrect code length');
         }
 
+        $range = ($range == null) ? $this->getRange() : $range;
         $timestamp = ($timestamp == null) ? $this->generateTimestamp() : $timestamp;
         $initKey = ($initKey == null) ? $this->getInitKey() : $initKey;
 
