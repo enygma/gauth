@@ -175,7 +175,7 @@ class Auth
      * @param string $code Code entered by user
      * @param string $initKey Initialization key
      * @param string $timestamp Timestamp for calculation
-     * @param integer $range Minutes before/after to validate hash against
+     * @param integer $range Seconds before/after to validate hash against
      * @throws \InvalidArgumentException If incorrect code length
      * @return boolean Pass/fail of validation
      */
