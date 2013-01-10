@@ -25,7 +25,7 @@ code you'll share with your users when they're trying to set up their client for
 Then, when they log in you have them enter in the latest code listed for your application for
 thier account. 
  
-**NOTE:** This tool offers a "window of opportunity" for the codes of 2 mintutes forward and
+**NOTE:** This tool offers a "window of opportunity" for the codes of 2 seconds forward and
 backward of the current timestamp, just in case things are a bit off. You can change this with
 the `setRange` method:
 
@@ -33,7 +33,7 @@ the `setRange` method:
 <?php
 $g = new \GAuth\Auth();
 
-// set it to 3 minutes
+// set it to 3 seconds
 $g->setRange(3);
 ?>
 ```
