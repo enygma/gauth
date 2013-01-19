@@ -56,7 +56,7 @@ class Auth
     {
         $this->buildLookup();
 
-        if ($initKey !== false) {
+        if ($initKey !== null) {
             $this->setInitKey($initKey);
         }
     }
