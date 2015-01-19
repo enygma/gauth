@@ -272,7 +272,7 @@ class Auth
      * @param string $timestamp Timestamp for calculation [optional]
      * @return string Geneerated code/hash
      */
-    public function generateOneTime($initKey = null, $timestamp = null)
+    private function generateOneTime($initKey = null, $timestamp = null)
     {
         $initKey = ($initKey == null) ? $this->getInitKey() : $initKey;
         $timestamp = ($timestamp == null) ? $this->generateTimestamp() : $timestamp;
@@ -311,7 +311,7 @@ class Auth
      *
      * @return integer Timestamp
      */
-    public function generateTimestamp()
+    private function generateTimestamp()
     {
         return floor(microtime(true)/$this->getRefresh());
     }
@@ -322,7 +322,7 @@ class Auth
      * @param string $hash Hash to truncate
      * @return string Truncated hash value
      */
-    public function truncateHash($hash)
+    private function truncateHash($hash)
     {
         $offset = ord($hash[19]) & 0xf;
 
@@ -341,7 +341,7 @@ class Auth
      * @throws \InvalidArgumentException When hash is not valid
      * @return string Binary value of hash
      */
-    public function base32_decode($hash)
+    private function base32_decode($hash)
     {
         $lookup = $this->lookup;
 
