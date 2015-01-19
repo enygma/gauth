@@ -20,7 +20,40 @@ class Auth
      * Internal lookup table
      * @var array
      */
-    private $lookup = array();
+    private $lookup = array(
+        'A' => 0,
+        'B' => 1,
+        'C' => 2,
+        'D' => 3,
+        'E' => 4,
+        'F' => 5,
+        'G' => 6,
+        'H' => 7,
+        'I' => 8,
+        'J' => 9,
+        'K' => 10,
+        'L' => 11,
+        'M' => 12,
+        'N' => 13,
+        'O' => 14,
+        'P' => 15,
+        'Q' => 16,
+        'R' => 17,
+        'S' => 18,
+        'T' => 19,
+        'U' => 20,
+        'V' => 21,
+        'W' => 22,
+        'X' => 23,
+        'Y' => 24,
+        'Z' => 25,
+        2 => 26,
+        3 => 27,
+        4 => 28,
+        5 => 29,
+        6 => 30,
+        7 => 31,
+    );
 
     /**
      * Initialization key
@@ -54,8 +87,6 @@ class Auth
      */
     public function __construct($initKey = null)
     {
-        $this->buildLookup();
-
         if ($initKey !== null) {
             $this->setInitKey($initKey);
         }
@@ -64,15 +95,12 @@ class Auth
     /**
      * Build the base32 lookup table
      *
+     * @deprecated Hard-coded in.
      * @return null
      */
     public function buildLookup()
     {
-        $lookup = array_combine(
-            array_merge(range('A', 'Z'), range(2, 7)),
-            range(0, 31)
-        );
-        $this->setLookup($lookup);
+        trigger_error('The base32 lookup table now comes pre-built.', E_USER_DEPRECATED);
     }
 
     /**
@@ -134,11 +162,7 @@ class Auth
      */
     public function setLookup($lookup)
     {
-        if (!is_array($lookup)) {
-            throw new \InvalidArgumentException('Lookup value must be an array');
-        }
-        $this->lookup = $lookup;
-        return $this;
+        trigger_error('The base 32 lookup should not ever be overwritten.', E_USER_DEPRECATED);
     }
 
     /**
@@ -148,6 +172,7 @@ class Auth
      */
     public function getLookup()
     {
+        trigger_error('This method will be removed in a later version', E_USER_DEPRECATED);
         return $this->lookup;
     }
 
