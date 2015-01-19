@@ -93,6 +93,75 @@ class AuthTest extends \PHPUnit_Framework_TestCase {
 	}
 
 
+	public function test_generate_a_code_of_length () {
+		$auth = new Auth();
+		$code = $auth->generateCode(4);
+		$this->assertEquals(4, strlen($code), 'Default code is 16 chars');
+	}
+
+
+	public function test_validate_a_valid_code () {
+
+		$key = 'ABC';
+		$auth = new Auth($key);
+		$code = '424535';
+		$timestamp = 1421707340;
+
+		$result = $auth->validateCode($code, null, $timestamp);
+		$this->assertTrue($result, 'This is a known good code');
+
+	}
+
+
+	public function test_validate_a_valid_code_false_when_out_of_range () {
+
+		$key = 'ABC';
+		$code = '424535';
+		$timestamp = 1421707340;
+
+		$auth = new Auth($key);
+		$auth->setRange(1);
+
+		$result = $auth->validateCode($code, null, $timestamp);
+		$this->assertFalse($result, 'This was a known good code 2 seconds ago');		
+	}
+
+
+	public function test_validate_a_code_of_wrong_length_fails () {
+
+		$this->setExpectedException('InvalidArgumentException');
+
+		$auth = new Auth();
+		$auth->setCodeLength(10);
+		$auth->validateCode('lt10');
+	
+	}
+
+
+	public function test_validate_with_different_init_key_is_false () {
+
+		$key = 'DEF';
+		$auth = new Auth($key);
+		$code = '424535';
+		$timestamp = 1421707340;
+
+		$result = $auth->validateCode($code, null, $timestamp);
+		$this->assertFalse($result, 'This is a known good code for key ABC');
+
+	}
+
+
+	public function test_validate_after_time_has_passed_is_false () {
+
+		$key = 'ABC';
+		$auth = new Auth($key);
+		$code = '424535';
+
+		$result = $auth->validateCode($code);
+		$this->assertFalse($result, 'This was a known good code, but that was then');
+	}
+
+
 	private $base64values = array(
         'A' => 0,
         'B' => 1,
