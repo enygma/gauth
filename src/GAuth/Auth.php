@@ -136,7 +136,7 @@ class Auth
      */
     public function setInitKey($key)
     {
-        if (preg_match('/^['.implode('', array_keys($this->getLookup())).']+$/', $key) == false) {
+        if (preg_match('/^['.implode('', array_keys($this->lookup)).']+$/', $key) == false) {
             throw new \InvalidArgumentException('Invalid base32 hash!');
         }
         $this->initKey = $key;
@@ -244,6 +244,7 @@ class Auth
         $timestamp = ($timestamp == null) ? $this->generateTimestamp() : $timestamp;
         $initKey = ($initKey == null) ? $this->getInitKey() : $initKey;
 
+
         $binary = $this->base32_decode($initKey);
 
         for ($time = ($timestamp - $range); $time <= ($timestamp + $range); $time++) {
@@ -285,7 +286,7 @@ class Auth
      */
     public function generateCode($length = 16)
     {
-        $lookup = implode('', array_keys($this->getLookup()));
+        $lookup = implode('', array_keys($this->lookup));
         $code = '';
 
         for ($i = 0; $i < $length; $i++) {
@@ -332,7 +333,7 @@ class Auth
      */
     public function base32_decode($hash)
     {
-        $lookup = $this->getLookup();
+        $lookup = $this->lookup;
 
         if (preg_match('/^['.implode('', array_keys($lookup)).']+$/', $hash) == false) {
             throw new \InvalidArgumentException('Invalid base32 hash!');
