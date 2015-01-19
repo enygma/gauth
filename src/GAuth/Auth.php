@@ -240,9 +240,19 @@ class Auth
             throw new \InvalidArgumentException('Incorrect code length');
         }
 
-        $range = ($range == null) ? $this->getRange() : $range;
-        $timestamp = ($timestamp == null) ? $this->generateTimestamp() : $timestamp;
-        $initKey = ($initKey == null) ? $this->getInitKey() : $initKey;
+        if ($initKey) {
+            $this->setInitKey($initKey);
+        }
+        $initKey = $this->getInitKey();
+        
+        if ($timestamp === null) {
+            $timestamp = $this->generateTimestamp();
+        }
+
+        if ($range) {
+            $this->setRange($range);
+        }
+        $range = $this->getRange();
 
 
         $binary = $this->base32_decode($initKey);
