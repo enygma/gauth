@@ -1,6 +1,8 @@
 GAuth : Google Authenticator Code Generator/Validation
 =========================
 
+[![Total Downloads](https://img.shields.io/packagist/dt/enygma/gauth.svg?style=flat-square)](https://packagist.org/packages/enygma/gauth)
+
 The `GAuth` library is designed to generate and validate codes compatible with the
 Google Authenticator tools.
 
