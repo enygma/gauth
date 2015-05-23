@@ -20,5 +20,12 @@
         "psr-0":{
             "GAuth":"src/"
         }
+    },
+    "extra": {
+        "clean": [
+            "tests/",
+            "README.md",
+            "LICENSE"
+        ]
     }
 }
