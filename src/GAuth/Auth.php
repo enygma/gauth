@@ -257,15 +257,21 @@ class Auth
      *
      * @param integer $length Length for the generated code
      * @return string Generated code
+     * @throws \Exception if it's unable to generate sufficient randomness.
      */
     public function generateCode($length = 16)
     {
         $lookup = implode('', array_keys($this->getLookup()));
         $code = '';
 
-        for ($i = 0; $i < $length; $i++) {
-            $code .= $lookup[mt_rand(0, strlen($lookup)-1)];
+        try {
+            for ($i = 0; $i < $length; $i++) {
+                $code .= $lookup[random_int(0, strlen($lookup) - 1)];
+            }
+        } catch(\Exception $e) {
+            throw $e; //return the exception to implementors of gauth so they can handle it
         }
+
 
         return $code;
     }
