@@ -277,13 +277,28 @@ class Auth
     }
 
     /**
-     * Geenrate the timestamp for the calculation
+     * Generate the timestamp for the calculation
      *
      * @return integer Timestamp
      */
     public function generateTimestamp()
     {
         return floor(microtime(true)/$this->getRefresh());
+    }
+
+    /**
+     * Geenrate the URL for the Google Charts API to make the QR code
+     *
+     * @param string $holder Account identifier (email, username, etc)
+     * @param string $name Name of the application
+     * @param integer $size Height x Width in pixels of the resulting image
+     */
+    public function generateQrUrl($holder, $name, $size = 30)
+    {
+      $data = 'otpauth://totp/'.$name.':'.$holder.'?secret='.$this->getInitKey();
+      $url = 'https://chart.googleapis.com/chart?chs=200x200&chld=M|0&cht=qr&chl='.$data;
+
+      return $url;
     }
 
     /**
