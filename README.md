@@ -73,6 +73,20 @@ if ($verify == true) {
 ?>
 ```
 
+#### To get the QR code for the application
+
+You can also use the tool to get the URL for a QR code users can scan to add your application to their Authenticator client:
+
+```php
+<?php
+$g = new \GAuth\Auth('your-initialization-code');
+$qrCodeUrl = $g->generateQrUrl();
+
+echo $qrCodeUrl;
+?>
+```
+
+
 #### More info:
 
 - [Google TOTP Two-factor Authentication for PHP](http://www.idontplaydarts.com/2011/07/google-totp-two-factor-authentication-for-php/)
