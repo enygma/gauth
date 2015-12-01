@@ -20,13 +20,13 @@ Include in your `composer.json` file:
 
 #### Getting Started
 
-To get started using the Google Authenticator with your application, you'll need to make an 
-initialization key (using `generateCode`) and save that to your app's settings. This is the 
+To get started using the Google Authenticator with your application, you'll need to make an
+initialization key (using `generateCode`) and save that to your app's settings. This is the
 code you'll share with your users when they're trying to set up their client for your system.
 
 Then, when they log in you have them enter in the latest code listed for your application for
-thier account. 
- 
+thier account.
+
 **NOTE:** This tool offers a "window of opportunity" for the codes of 2 seconds forward and
 backward of the current timestamp, just in case things are a bit off. You can change this with
 the `setRange` method:
@@ -75,16 +75,25 @@ if ($verify == true) {
 
 #### To get the QR code for the application
 
-You can also use the tool to get the URL for a QR code users can scan to add your application to their Authenticator client:
+You can also use the tool to get the URL for a QR code users can scan to add your application to their Authenticator client. The call to `generateQrImage` returns the actual image data for you to use as you wish, either to embed in an `img` tag or save to a file:
 
 ```php
 <?php
-$g = new \GAuth\Auth('your-initialization-code');
-$qrCodeUrl = $g->generateQrUrl();
+$holder = 'foo@bar.com';
+$name = 'my-app-name';
 
-echo $qrCodeUrl;
+$g = new \GAuth\Auth('your-initialization-code');
+$qrCodeImageData = $g->generateQrImage($holder, $name, 200);
+
+// To use in an image tag:
+echo '<img src="data:image/png;base64,'.base64_encode($qrCodeImageData).'"/><br/><hr/>';
+
+// Or just save to a file
+file_put_contents('/path/to/qr-file.png', $qrCodeImageData);
 ?>
 ```
+
+The library uses internal QR code generation, not the Google Charts API many similar libraries use.
 
 
 #### More info:
