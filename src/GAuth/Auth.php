@@ -287,18 +287,26 @@ class Auth
     }
 
     /**
-     * Geenrate the URL for the Google Charts API to make the QR code
+     * Generate the URL for the Google Charts API to make the QR code
+     * To use in an image tag:
+     *
+     * '<img src="data:image/png;base64,'.base64_encode($data).'"/>
      *
      * @param string $holder Account identifier (email, username, etc)
      * @param string $name Name of the application
      * @param integer $size Height x Width in pixels of the resulting image
      */
-    public function generateQrUrl($holder, $name, $size = 30)
+    public function generateQrImage($holder, $name, $size = 30)
     {
       $data = 'otpauth://totp/'.$name.':'.$holder.'?secret='.$this->getInitKey();
-      $url = 'https://chart.googleapis.com/chart?chs=200x200&chld=M|0&cht=qr&chl='.$data;
 
-      return $url;
+      $renderer = new \BaconQrCode\Renderer\Image\Png();
+      $renderer->setMargin(0)
+        ->setHeight($size)
+        ->setWidth($size);
+      $writer = new \BaconQrCode\Writer($renderer);
+
+      return $writer->writeString($data);
     }
 
     /**
