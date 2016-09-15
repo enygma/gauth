@@ -20,7 +20,40 @@ class Auth
      * Internal lookup table
      * @var array
      */
-    private $lookup = array();
+    private $lookup = array(
+        'A' => 0,
+        'B' => 1,
+        'C' => 2,
+        'D' => 3,
+        'E' => 4,
+        'F' => 5,
+        'G' => 6,
+        'H' => 7,
+        'I' => 8,
+        'J' => 9,
+        'K' => 10,
+        'L' => 11,
+        'M' => 12,
+        'N' => 13,
+        'O' => 14,
+        'P' => 15,
+        'Q' => 16,
+        'R' => 17,
+        'S' => 18,
+        'T' => 19,
+        'U' => 20,
+        'V' => 21,
+        'W' => 22,
+        'X' => 23,
+        'Y' => 24,
+        'Z' => 25,
+        2 => 26,
+        3 => 27,
+        4 => 28,
+        5 => 29,
+        6 => 30,
+        7 => 31,
+    );
 
     /**
      * Initialization key
@@ -54,8 +87,6 @@ class Auth
      */
     public function __construct($initKey = null)
     {
-        $this->buildLookup();
-
         if ($initKey !== null) {
             $this->setInitKey($initKey);
         }
@@ -64,15 +95,12 @@ class Auth
     /**
      * Build the base32 lookup table
      *
+     * @deprecated Hard-coded in.
      * @return null
      */
     public function buildLookup()
     {
-        $lookup = array_combine(
-            array_merge(range('A', 'Z'), range(2, 7)),
-            range(0, 31)
-        );
-        $this->setLookup($lookup);
+        trigger_error('The base32 lookup table now comes pre-built.', E_USER_DEPRECATED);
     }
 
     /**
@@ -108,7 +136,7 @@ class Auth
      */
     public function setInitKey($key)
     {
-        if (preg_match('/^['.implode('', array_keys($this->getLookup())).']+$/', $key) == false) {
+        if (preg_match('/^['.implode('', array_keys($this->lookup)).']+$/', $key) == false) {
             throw new \InvalidArgumentException('Invalid base32 hash!');
         }
         $this->initKey = $key;
@@ -134,11 +162,7 @@ class Auth
      */
     public function setLookup($lookup)
     {
-        if (!is_array($lookup)) {
-            throw new \InvalidArgumentException('Lookup value must be an array');
-        }
-        $this->lookup = $lookup;
-        return $this;
+        trigger_error('The base 32 lookup should not ever be overwritten.', E_USER_DEPRECATED);
     }
 
     /**
@@ -148,6 +172,7 @@ class Auth
      */
     public function getLookup()
     {
+        trigger_error('This method will be removed in a later version', E_USER_DEPRECATED);
         return $this->lookup;
     }
 
@@ -215,9 +240,20 @@ class Auth
             throw new \InvalidArgumentException('Incorrect code length');
         }
 
-        $range = ($range == null) ? $this->getRange() : $range;
-        $timestamp = ($timestamp == null) ? $this->generateTimestamp() : $timestamp;
-        $initKey = ($initKey == null) ? $this->getInitKey() : $initKey;
+        if ($initKey) {
+            $this->setInitKey($initKey);
+        }
+        $initKey = $this->getInitKey();
+        
+        if ($timestamp === null) {
+            $timestamp = $this->generateTimestamp();
+        }
+
+        if ($range) {
+            $this->setRange($range);
+        }
+        $range = $this->getRange();
+
 
         $binary = $this->base32_decode($initKey);
 
@@ -236,7 +272,7 @@ class Auth
      * @param string $timestamp Timestamp for calculation [optional]
      * @return string Geneerated code/hash
      */
-    public function generateOneTime($initKey = null, $timestamp = null)
+    private function generateOneTime($initKey = null, $timestamp = null)
     {
         $initKey = ($initKey == null) ? $this->getInitKey() : $initKey;
         $timestamp = ($timestamp == null) ? $this->generateTimestamp() : $timestamp;
@@ -261,7 +297,7 @@ class Auth
      */
     public function generateCode($length = 16)
     {
-        $lookup = implode('', array_keys($this->getLookup()));
+        $lookup = implode('', array_keys($this->lookup));
         $code = '';
 
         try {
@@ -281,7 +317,7 @@ class Auth
      *
      * @return integer Timestamp
      */
-    public function generateTimestamp()
+    private function generateTimestamp()
     {
         return floor(microtime(true)/$this->getRefresh());
     }
@@ -315,7 +351,7 @@ class Auth
      * @param string $hash Hash to truncate
      * @return string Truncated hash value
      */
-    public function truncateHash($hash)
+    private function truncateHash($hash)
     {
         $offset = ord($hash[19]) & 0xf;
 
@@ -334,9 +370,9 @@ class Auth
      * @throws \InvalidArgumentException When hash is not valid
      * @return string Binary value of hash
      */
-    public function base32_decode($hash)
+    private function base32_decode($hash)
     {
-        $lookup = $this->getLookup();
+        $lookup = $this->lookup;
 
         if (preg_match('/^['.implode('', array_keys($lookup)).']+$/', $hash) == false) {
             throw new \InvalidArgumentException('Invalid base32 hash!');

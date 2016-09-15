@@ -24,14 +24,7 @@ class AuthTest extends \PHPUnit_Framework_TestCase {
     }
 
 
-    public function test_base64_lookup_is_correct () {
-
-        $expected = $this->base64values;
-
-        $auth = new Auth();
-        $this->assertEquals($expected, $auth->getLookup());
-    }
-
+    
 
     public function test_get_and_set_range () {
 
