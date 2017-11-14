@@ -15,7 +15,7 @@
     ],
     "require":{
         "php":">=5.3.1",
-        "paragonie/random_compat":"2.*",
+        "paragonie/random_compat":"1.*",
         "bacon/bacon-qr-code":"1.0.0"
     },
     "autoload":{
